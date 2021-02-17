@@ -14,9 +14,11 @@ services:
     build: ./mysql
     environment:
       MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
       MYSQL_USER: root
       MYSQL_PASSWORD: root
-
+    depends_on:
+      - mysql
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -25,11 +27,9 @@ services:
       DB_ADDR: mysql
       DB_DATABASE: keycloak
       DB_USER: keycloak
-      DB_PASSWORD: password
+      DB_PASSWORD: keycloak_password
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
-      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the MySQL JDBC driver documentation in order to use it.
-      #JDBC_PARAMS: "connectTimeout=30000"
     ports:
       - '8080:8080'
     depends_on:
@@ -43,7 +43,7 @@ services:
       DATABASE_PORT: 3306
       DATABASE_NAME: strapi
       DATABASE_USERNAME: strapi
-      DATABASE_PASSWORD: strapi
+      DATABASE_PASSWORD: strapi_password
       DATABASE_SSL: 'false'
     volumes:
       - ./strapi/data:/srv/app
